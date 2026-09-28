@@ -6,26 +6,30 @@
         <label>What is your token</label>
         <input v-model="userToken"/>
         <button @click="getFollowers">Search</button>
+        <button>Check</button>
     </div>
     <div>
         <p>Response here:</p>
-        <div>
+        <!-- <div>
             <ol>    
                 <li v-for="person in data">
                     {{ person?.login }}
                 </li>
             </ol>
             
-        </div>
+        </div> -->
     </div>
     <div>
-        <p>and our usernames are: {{ usernames }}</p>
+        <p>and our usernames are: </p>
+        <ol>
+            <li v-for="user in usernames" :key="user"> {{ user }}</li>
+        </ol>
     </div>
 </template>
 
 <script setup lang="ts">
 import {  ref, toValue } from 'vue'
-import { token } from '../sharedCode/secret'
+import token from '../sharedCode/secret'
 
 // States
 const pageNumber = ref(1)
@@ -45,14 +49,11 @@ async function getFollowers(pNumber){
             }
         });
         data.value = await response.json();
-        // if((response.ok))
         if((response.ok)){
-            // data.value = ["THe response is OK : ", response]
             console.log("The reponse we get is : ", response)
             buildUsername(data.value)
             if(data.value.length >= 1){
                 pageNumber.value += 1
-                // getFollowers()
                 console.log("Gotten.")
                 getFollowers(pageNumber.value)
             } else{
@@ -67,7 +68,7 @@ async function getFollowers(pNumber){
 }
 function buildUsername (array){
     // const array1 = [1,2,3,5]
-    const result = array.map((val)=>val.login)
+    const result = array.map(val=>({username:val.login, followsMe: false}))
     usernames.value = usernames.value.concat(result)
 }
 </script>
