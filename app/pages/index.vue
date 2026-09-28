@@ -9,7 +9,7 @@
         <button @click="checkFollow">Check</button>
     </div>
     <div>
-        <p>Response here:</p>
+        <p>Response here: {{ bestPeople }}</p>
         <!-- <div>
             <ol>    
                 <li v-for="person in data">
@@ -20,7 +20,7 @@
         </div> -->
     </div>
     <div>
-        <p>and our usernames are: </p>
+        <p>and our usernames are: {{ usernames?.length }} <br> {{ unFollows }}</p>
         <ol>
             <li v-for="user in usernames" :key="user"> {{ user }}</li>
         </ol>
@@ -37,6 +37,8 @@ const userToken = ref(token)
 
 const data = ref([])
 const usernames = ref ([])
+const unFollows = ref<string[]>([])
+const bestPeople = ref(0)
 
 // Functions
 async function getFollowings(pNumber:number){
@@ -71,11 +73,16 @@ function buildUsername (array){
     const result = array.map(val=>({username:val.login, followsMe: false}))
     usernames.value = usernames.value.concat(result)
 }
+function builUnFollows (username:string){
+    // const array1 = [1,2,3,5]
+    unFollows.value.push(username)
+}
 
 async function doesFollow(user){
+        data.value = []
         const url = "https://api.github.com/user/following/"
         console.log("Running for : ", user?.username)
-        try{
+        // try{
         const response = await fetch(`${url}${user?.username}`, {
             method: "GET",
             headers: {
@@ -86,22 +93,25 @@ async function doesFollow(user){
         data.value = await response.json();
         if((response.ok)){
             console.log("The reponse we get is : ", data.value)
+            // user?.followsMe = true
+            builUnFollows(user?.username)
+            // return 0
             
         } else{
             console.log("Failed with reponse : ", data.value)
+            // user?.followsMe = false
         }
-    } catch(e){
-        console.log("didn't find the user : ", e)
-    }
+    // } catch(e){
+    //     console.log("didn't find the user : ", e)
+    //     return -2
+    // }
 }
 function checkFollow(){
     let counter = 0
     console.log("based on : ", usernames?.value)
     usernames?.value?.forEach(user => {
-        if (counter < 5){
-            doesFollow(user)
-        }
-        counter += 1
+        doesFollow(user)
     });
+    // usernames?.value?.map((user)=>doesFollow(user))
 }
 </script>
