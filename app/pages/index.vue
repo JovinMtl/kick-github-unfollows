@@ -1,0 +1,73 @@
+<template>
+    <div>
+        It's a honnor to have you here.
+        <!-- <nuxtPage/> -->
+        <br>
+        <label>What is your token</label>
+        <input v-model="userToken"/>
+        <button @click="getFollowers">Search</button>
+    </div>
+    <div>
+        <p>Response here:</p>
+        <div>
+            <ol>    
+                <li v-for="person in data">
+                    {{ person?.login }}
+                </li>
+            </ol>
+            
+        </div>
+    </div>
+    <div>
+        <p>and our usernames are: {{ usernames }}</p>
+    </div>
+</template>
+
+<script setup lang="ts">
+import {  ref, toValue } from 'vue'
+import { token } from '../sharedCode/secret'
+
+// States
+const pageNumber = ref(1)
+const userToken = ref(token)
+const url = "https://api.github.com/user/following?page="
+const data = ref([])
+const usernames = ref ([])
+
+// Functions
+async function getFollowers(pNumber){
+        console.log("Running for : ", pNumber)
+        const response = await fetch(`${url} + ${pNumber}`, {
+            method: "GET",
+            headers: {
+                "Content-type": "application/json",
+                Authorization: "Bearer " + userToken.value,
+            }
+        });
+        data.value = await response.json();
+        // if((response.ok))
+        if((response.ok)){
+            // data.value = ["THe response is OK : ", response]
+            console.log("The reponse we get is : ", response)
+            buildUsername(data.value)
+            if(data.value.length >= 1){
+                pageNumber.value += 1
+                // getFollowers()
+                console.log("Gotten.")
+                getFollowers(pageNumber.value)
+            } else{
+                console.log("Out of reach")
+            }
+            
+            // getFollowers()
+            // console.log("and our user")
+        } else{
+            // data.value = ["THe response is not OK", ]
+                }
+}
+function buildUsername (array){
+    // const array1 = [1,2,3,5]
+    const result = array.map((val)=>val.login)
+    usernames.value = usernames.value.concat(result)
+}
+</script>
