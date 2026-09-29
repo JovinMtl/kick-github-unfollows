@@ -22,7 +22,7 @@
     <div>
         <p>and our usernames are: {{ usernames?.length }} <br>unFollows: {{ unFollows }}</p>
         <ol>
-            <li :class="user.followStatus == 'jove' ? 'bg-red': ''" v-for="user in usernames" :key="user"> {{ user }}</li>
+            <li :class="user.followStatus == false ? 'bg-red': ''" v-for="user in usernames" :key="user"> {{ user }}</li>
         </ol>
     </div>
 </template>
@@ -71,7 +71,7 @@ async function getFollowings(pNumber:number){
 }
 function buildUsername (array){
     // const array1 = [1,2,3,5]
-    const result = array.map(val=>({username:val.login, followStatus: false}))
+    const result = array.map(val=>({username:val.login, followStatus: true}))
     usernames.value = usernames.value.concat(result)
 }
 function builUnFollows (username:string, promisedValue){
@@ -89,7 +89,7 @@ function builUnFollows (username:string, promisedValue){
 }
 
 async function doesFollow(user){
-    const oneTimeResponse = ref("jove")
+    // const oneTimeResponse = ref(true)
         data.value = []
         const url = "https://api.github.com/users/"
         console.log("Running for : ", user?.username)
@@ -107,7 +107,7 @@ async function doesFollow(user){
         } else {
             console.log(user?.username,"The response is not Okay: ", response)
             // unFollows.value.push(user?.username)
-            builUnFollows(user?.username, oneTimeResponse)
+            builUnFollows(user?.username, false)
         }
         // if((response.status == 204)){
         //     console.log(user?.username, " it's OKAY. ")
