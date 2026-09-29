@@ -1,12 +1,14 @@
 <template>
     <div>
-        It's a honnor to have you here.
-        <!-- <nuxtPage/> -->
+        <h1>It's a honnor to have you here.</h1>
+        <h3>Find out who have been playing by unFollowing you.</h3>
         <br>
-        <label>What is your token</label>&nbsp;
-        <input v-model="userToken"/>&nbsp;
-        <button @click="getFollowings">Search</button>&nbsp;
-        <button @click="checkFollow">Check</button>
+        <label>Your token</label>&nbsp;
+        <input class="inp" v-model="userToken"/><br>
+        <label>Username</label>&nbsp;
+        <input class="inp" v-model="userName"/><br>
+        <button class="inp" @click="getFollowings">Search</button>&nbsp;
+        <button class="inp" @click="checkFollow">Check</button>
     </div>
     <div>
         <p>and our usernames are: {{ usernames?.length }} <br>unFollows: {{ unFollows }}</p>
@@ -27,11 +29,12 @@
 
 <script setup lang="ts">
 import {  ref, toValue } from 'vue'
-import token from '../sharedCode/secret'
+// import token from '../sharedCode/secret'
 
 // States
 const pageNumber = ref(1)
-const userToken = ref(token)
+const userToken = ref('')
+const userName = ref('')
 
 const data = ref([])
 const usernames = ref ([])
@@ -142,5 +145,10 @@ body{
 }
 .bg-red{
     background-color: #d55454;
+}
+.inp{
+    padding: 8px;
+    margin: 4px;
+    border-radius: 4px;
 }
 </style>
