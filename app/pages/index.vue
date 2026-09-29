@@ -20,9 +20,9 @@
         </div> -->
     </div>
     <div>
-        <p>and our usernames are: {{ usernames?.length }} <br> {{ unFollows }}</p>
+        <p>and our usernames are: {{ usernames?.length }} <br>unFollows: {{ unFollows }}</p>
         <ol>
-            <li v-for="user in usernames" :key="user"> {{ user }}</li>
+            <li :class="user.followStatus == 'jove' ? 'bg-red': ''" v-for="user in usernames" :key="user"> {{ user }}</li>
         </ol>
     </div>
 </template>
@@ -39,6 +39,7 @@ const data = ref([])
 const usernames = ref ([])
 const unFollows = ref<string[]>([])
 const bestPeople = ref(0)
+
 
 // Functions
 async function getFollowings(pNumber:number){
@@ -70,20 +71,30 @@ async function getFollowings(pNumber:number){
 }
 function buildUsername (array){
     // const array1 = [1,2,3,5]
-    const result = array.map(val=>({username:val.login, followsMe: false}))
+    const result = array.map(val=>({username:val.login, followStatus: false}))
     usernames.value = usernames.value.concat(result)
 }
-function builUnFollows (username:string){
+function builUnFollows (username:string, promisedValue){
     // const array1 = [1,2,3,5]
-    unFollows.value.push(username)
+    // unFollows.value.push(username)
+
+    // usernames.value.forEach((user)=>{
+    //     if((user.username) == username){
+    //         console.log("Found :", username)
+    //         user.
+    //     }
+    // })
+    const updatedUsername = usernames.value.map(user=>user.username == username ? {...user, followStatus:promisedValue} : user)
+    usernames.value = updatedUsername
 }
 
 async function doesFollow(user){
+    const oneTimeResponse = ref("jove")
         data.value = []
-        const url = "https://api.github.com/user/following/"
+        const url = "https://api.github.com/users/"
         console.log("Running for : ", user?.username)
-        // try{
-        const response = await fetch(`${url}${user?.username}`, {
+    try{
+        const response = await fetch(`${url}${user?.username}/following/JovinMtl`, {
             method: "GET",
             headers: {
                 "Content-type": "application/json",
@@ -91,20 +102,26 @@ async function doesFollow(user){
             }
         });
         data.value = await response.json();
-        if((response.ok)){
-            console.log("The reponse we get is : ", data.value)
-            // user?.followsMe = true
-            builUnFollows(user?.username)
-            // return 0
-            
-        } else{
-            console.log("Failed with reponse : ", data.value)
-            // user?.followsMe = false
+        if(response.ok){
+            console.log(user?.username,"the Status is okay: ", response)
+        } else {
+            console.log(user?.username,"The response is not Okay: ", response)
+            // unFollows.value.push(user?.username)
+            builUnFollows(user?.username, oneTimeResponse)
         }
-    // } catch(e){
-    //     console.log("didn't find the user : ", e)
-    //     return -2
-    // }
+        // if((response.status == 204)){
+        //     console.log(user?.username, " it's OKAY. ")
+        //     unFollows.value.push(username)
+        //     // builUnFollows(user?.username)
+            
+        // } else if((response.status == 404)){
+        //     console.log(user?.username, " Does not follow me ")
+        // } else {
+        //     console.log(user?.username, " don't know if follows")
+        // }
+    } catch(e){
+        console.log("didn't find the user : ", e)
+    }
 }
 function checkFollow(){
     let counter = 0
@@ -115,3 +132,9 @@ function checkFollow(){
     // usernames?.value?.map((user)=>doesFollow(user))
 }
 </script>
+
+<style scoped>
+.bg-red{
+    background-color: red;
+}
+</style>
