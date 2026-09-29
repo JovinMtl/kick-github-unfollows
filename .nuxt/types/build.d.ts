@@ -26,6 +26,8 @@ declare module "#build/plugins.server.mjs";
 declare module "#build/plugins.server";
 declare module "#build/test-component-wrapper.mjs";
 declare module "#build/test-component-wrapper";
+declare module "#build/image-options.mjs";
+declare module "#build/image-options";
 declare module "#build/devtools/settings.mjs";
 declare module "#build/devtools/settings";
 declare module "#build/runtime.vue-devtools-client.h7e8bW_2CNVj0UyDHCPTZZwvJttpBJo9erFiS7D3b7U.js";

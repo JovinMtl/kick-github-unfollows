@@ -3,27 +3,25 @@
         It's a honnor to have you here.
         <!-- <nuxtPage/> -->
         <br>
-        <label>What is your token</label>
-        <input v-model="userToken"/>
-        <button @click="getFollowings">Search</button>
+        <label>What is your token</label>&nbsp;
+        <input v-model="userToken"/>&nbsp;
+        <button @click="getFollowings">Search</button>&nbsp;
         <button @click="checkFollow">Check</button>
     </div>
     <div>
-        <p>Response here: {{ bestPeople }}</p>
-        <!-- <div>
-            <ol>    
-                <li v-for="person in data">
-                    {{ person?.login }}
-                </li>
-            </ol>
-            
-        </div> -->
-    </div>
-    <div>
         <p>and our usernames are: {{ usernames?.length }} <br>unFollows: {{ unFollows }}</p>
-        <ol>
-            <li :class="user.followStatus == false ? 'bg-red': ''" v-for="user in usernames" :key="user"> {{ user }}</li>
-        </ol>
+            <div style="display: flex; align-items: center; margin: 0.5rem;"  v-for="(user, index) in usernames" :key="user"> 
+                {{ index+1 }}.&nbsp;
+                <NuxtImg 
+                    width="48"
+                    height="48" 
+                    :src="user.avatar_url" 
+                    :placeholder="[50, 25]" 
+                    style="border-radius: 48px;"
+                />&nbsp;
+                {{ user.username }} &nbsp;
+                <button class="bg-red" style="padding: 0.3rem;    border-radius: 0.3rem;" v-if="user.followStatus == false">unFollow</button>
+            </div>
     </div>
 </template>
 
@@ -71,7 +69,7 @@ async function getFollowings(pNumber:number){
 }
 function buildUsername (array){
     // const array1 = [1,2,3,5]
-    const result = array.map(val=>({username:val.login, followStatus: true}))
+    const result = array.map(val=>({username:val.login, followStatus: true, avatar_url:val.avatar_url}))
     usernames.value = usernames.value.concat(result)
 }
 function builUnFollows (username:string, promisedValue){
@@ -133,8 +131,16 @@ function checkFollow(){
 }
 </script>
 
-<style scoped>
+<style>
+html{
+    background-color: #97e3cb;
+    padding: 0;
+    margin: 0;
+}
+body{
+    padding: 16px;
+}
 .bg-red{
-    background-color: red;
+    background-color: #d55454;
 }
 </style>
