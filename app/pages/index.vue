@@ -5,7 +5,7 @@
         <br>
         <label>Your token</label>&nbsp;
         <input class="inp" v-model="userToken"/><br>
-        <label>Username</label>&nbsp;
+        <label>Username &nbsp;</label>&nbsp;
         <input class="inp" v-model="userName"/><br>
         <button class="inp" @click="getFollowings">Search</button>&nbsp;
         <button class="inp" @click="checkFollow">Check</button>
