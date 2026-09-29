@@ -142,6 +142,7 @@ html{
 }
 body{
     padding: 16px;
+    font-family: monospace;
 }
 .bg-red{
     background-color: #d55454;
