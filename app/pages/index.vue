@@ -11,7 +11,7 @@
         <button class="inp" @click="checkFollow">Check</button>
     </div>
     <div>
-        <p>and our usernames are: {{ usernames?.length }} <br>unFollows: {{ unFollows }}</p>
+        <p>and the people you follow are: {{ usernames?.length }}</p>
             <div style="display: flex; align-items: center; margin: 0.5rem;"  v-for="(user, index) in usernames" :key="user"> 
                 {{ index+1 }}.&nbsp;
                 <NuxtImg 
