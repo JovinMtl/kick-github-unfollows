@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>It's a honnor to have you here.</h1>
+        <h1>It's an honor to have you here.</h1>
         <h3>Find out who have been playing by unFollowing you.</h3>
         <br>
         <label>Your token</label>&nbsp;
@@ -13,8 +13,9 @@
     <div>
         <p>
             and the people you follow are: {{ usernames?.length }}
-            <span v-if="endLoading == 1">counting...</span>
+            <span v-if="endLoading == 1">still counting...</span> 
             <span v-else-if="endLoading == 2">Done</span>
+            <span class="red" v-if="badPeople"> ({{ badPeople }} bad people)</span>
         </p>
             <div style="display: flex; align-items: center; margin: 0.5rem;"  v-for="(user, index) in usernames" :key="user"> 
                 {{ index+1 }}.&nbsp;
@@ -43,12 +44,17 @@ const userName = ref('')
 const data = ref([])
 const usernames = ref ([])
 const unFollows = ref<string[]>([])
-const bestPeople = ref(0)
+const badPeople = ref(0)
 const endLoading = ref(0)
 
 
 // Functions
 async function getFollowings(pNumber:number){
+    badPeople.value = 0
+    if(endLoading.value == 2){
+        usernames.value = [];
+        pageNumber.value = 1
+    }
     endLoading.value = 1;
         const url = "https://api.github.com/user/following?page="
         const response = await fetch(`${url}${pNumber}`, {
@@ -115,6 +121,7 @@ async function doesFollow(user){
         } else {
             console.log(user?.username,"The response is not Okay: ", response)
             // unFollows.value.push(user?.username)
+            badPeople.value += 1
             builUnFollows(user?.username, false)
         }
         // if((response.status == 204)){
@@ -133,6 +140,7 @@ async function doesFollow(user){
 }
 function checkFollow(){
     let counter = 0
+    badPeople.value = 0
     console.log("based on : ", usernames?.value)
     usernames?.value?.forEach(user => {
         doesFollow(user)
@@ -141,7 +149,7 @@ function checkFollow(){
 }
 function unFollowPerson(username){
     const url = "https://api.github.com/user/following/"
-    console.log("Running for : ", username)
+    console.log("About to unFollow : ", username)
     // try{
     //     const response = await fetch(`${url}${username}`, {
     //         method: "DELETE",
@@ -180,5 +188,11 @@ body{
     padding: 8px;
     margin: 4px;
     border-radius: 4px;
+}
+.white{
+    color: white;
+}
+.red{
+    color: red;
 }
 </style>
