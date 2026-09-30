@@ -2030,23 +2030,6 @@ async function errorHandler(error, event) {
   // H3 will handle fallback
 }
 
-const script = `
-if (!window.__NUXT_DEVTOOLS_TIME_METRIC__) {
-  Object.defineProperty(window, '__NUXT_DEVTOOLS_TIME_METRIC__', {
-    value: {},
-    enumerable: false,
-    configurable: true,
-  })
-}
-window.__NUXT_DEVTOOLS_TIME_METRIC__.appInit = Date.now()
-`;
-
-const _JYyp0luKGr_t3IuOUv5JK1jwpPmhbsRucT3kOgWIs = (function(nitro) {
-  nitro.hooks.hook("render:html", (htmlContext) => {
-    htmlContext.head.push(`<script>${script}<\/script>`);
-  });
-});
-
 //#region src/runtime/diagnostics.ts
 const ansi = (open, close) => (s) => `\x1B[${open}m${s}\x1B[${close}m`;
 const colors = {
@@ -2187,8 +2170,7 @@ function onConsoleLog(callback) {
 }
 
 const plugins = [
-  _JYyp0luKGr_t3IuOUv5JK1jwpPmhbsRucT3kOgWIs,
-dev_server_logs_default,
+  dev_server_logs_default,
 _wH6JrtIxmaSoA8lCPWFnE9z4lQeXW6H5z3l5aymEQw
 ];
 

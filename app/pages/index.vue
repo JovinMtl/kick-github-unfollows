@@ -11,7 +11,11 @@
         <button class="inp" @click="checkFollow">Check</button>
     </div>
     <div>
-        <p>and the people you follow are: {{ usernames?.length }}</p>
+        <p>
+            and the people you follow are: {{ usernames?.length }}
+            <span v-if="endLoading == 1">counting...</span>
+            <span v-else-if="endLoading == 2">Done</span>
+        </p>
             <div style="display: flex; align-items: center; margin: 0.5rem;"  v-for="(user, index) in usernames" :key="user"> 
                 {{ index+1 }}.&nbsp;
                 <NuxtImg 
@@ -40,10 +44,12 @@ const data = ref([])
 const usernames = ref ([])
 const unFollows = ref<string[]>([])
 const bestPeople = ref(0)
+const endLoading = ref(0)
 
 
 // Functions
 async function getFollowings(pNumber:number){
+    endLoading.value = 1;
         const url = "https://api.github.com/user/following?page="
         const response = await fetch(`${url}${pNumber}`, {
             method: "GET",
@@ -61,7 +67,8 @@ async function getFollowings(pNumber:number){
                 console.log("Gotten.")
                 getFollowings(pageNumber.value)
             } else{
-                console.log("Out of reach")
+                console.log("Out of reach");
+                endLoading.value = 2
             }
             
             // getFollowers()
