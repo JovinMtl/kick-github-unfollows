@@ -22,7 +22,7 @@
                     style="border-radius: 48px;"
                 />&nbsp;
                 {{ user.username }} &nbsp;
-                <button class="bg-red" style="padding: 0.3rem;    border-radius: 0.3rem;" v-if="user.followStatus == false">unFollow</button>
+                <button class="bg-red" style="padding: 0.3rem;    border-radius: 0.3rem;" v-if="user.followStatus == false" @click="unFollowPerson(user.username)">unFollow</button>
             </div>
     </div>
 </template>
@@ -95,7 +95,7 @@ async function doesFollow(user){
         const url = "https://api.github.com/users/"
         console.log("Running for : ", user?.username)
     try{
-        const response = await fetch(`${url}${user?.username}/following/JovinMtl`, {
+        const response = await fetch(`${url}${user?.username}/following/${userName.value}`, {
             method: "GET",
             headers: {
                 "Content-type": "application/json",
@@ -131,6 +131,28 @@ function checkFollow(){
         doesFollow(user)
     });
     // usernames?.value?.map((user)=>doesFollow(user))
+}
+function unFollowPerson(username){
+    const url = "https://api.github.com/user/following/"
+    console.log("Running for : ", username)
+    // try{
+    //     const response = await fetch(`${url}${username}`, {
+    //         method: "DELETE",
+    //         headers: {
+    //             "Content-type": "application/json",
+    //             Authorization: "Bearer " + userToken.value,
+    //         }
+    //     });
+    //     data.value = await response.json();
+    //     if(response.ok){
+    //         console.log(username,"the Status is okay: ", response)
+    //     } else {
+    //         console.log(username,"The response is not Okay: ", response)
+    //         // builUnFollows(username, false)
+    //     }
+    // } catch(e){
+    //     console.log("didn't find the user : ", e)
+    // }
 }
 </script>
 

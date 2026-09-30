@@ -1,6 +1,6 @@
 /// <reference types="@nuxt/devtools" />
-/// <reference types="@nuxt/image" />
 /// <reference types="@nuxt/telemetry" />
+/// <reference types="@nuxt/image" />
 /// <reference path="types/nitro-layouts.d.ts" />
 /// <reference path="types/modules.d.ts" />
 /// <reference path="types/runtime-config.d.ts" />
