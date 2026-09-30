@@ -8,7 +8,7 @@
         <label>Username &nbsp;</label>&nbsp;
         <input class="inp" v-model="userName"/><br>
         <button class="inp" @click="getFollowings">Search</button>&nbsp;
-        <button class="inp" @click="checkFollow">Check</button>
+        <button class="inp" @click="checkUsernameValid(userName, 1)">Check</button>
     </div>
     <div>
         <p>
@@ -27,25 +27,28 @@
                     style="border-radius: 48px;"
                 />&nbsp;
                 {{ user.username }} &nbsp;
-                <button class="bg-red" style="padding: 0.3rem;    border-radius: 0.3rem;" v-if="user.followStatus == false" @click="unFollowPerson(user.username)">unFollow</button>
+                <button class="bg-red" style="padding: 0.3rem;    border-radius: 0.3rem;" v-if="user.followStatus == false" @click="checkUsernameValid(user.username, 2)">unFollow</button>
             </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import {  ref, toValue } from 'vue'
-// import token from '../sharedCode/secret'
+import {  ref, toValue, watch } from 'vue'
+import type { Ref } from 'vue'
 
 // States
-const pageNumber = ref(1)
-const userToken = ref('')
-const userName = ref('')
+const pageNumber:Ref<number> = ref(1)
+const userToken:Ref<string> = ref('')
+const userName:Ref<string> = ref('')
 
 const data = ref([])
 const usernames = ref ([])
 const unFollows = ref<string[]>([])
-const badPeople = ref(0)
-const endLoading = ref(0)
+const badPeople:Ref<number>  = ref(0)
+const endLoading:Ref<number>  = ref(0)
+
+const validUsername:Ref<string> = ref('')
+const commandNumber:Ref<number> = ref(0)
 
 
 // Functions
@@ -145,9 +148,38 @@ function checkFollow(){
     usernames?.value?.forEach(user => {
         doesFollow(user)
     });
-    // usernames?.value?.map((user)=>doesFollow(user))
 }
-function unFollowPerson(username){
+async function checkUsernameValid(username:string, command:number=0){
+    // command points the end use of this function
+    // 0= 'nothing'
+    // 1="doesFollow()", 2="unFollowPerson()"
+    if (username.length > 2){
+        const url = "https://api.github.com/users/"
+        console.log("Ask if username ( " + username + " ) is real.")
+        try{
+            const response = await fetch(`${url}${username}`, {
+                method: "GET",
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: "Bearer " + userToken.value,
+                }
+            });
+            data.value = await response.json();
+            if(response.ok){
+                console.log(username,"the username is VALID: ", response)
+                validUsername.value = username
+                commandNumber.value = Number(command)
+            } else {
+                console.log(username,"The username is not VALID: ", response)
+            }
+        } catch(e){
+            console.log("didn't find the user : ", e)
+        }
+    } else{
+        // notify that caracters must be above 2.
+    }   
+}
+async function unFollowPerson(username){
     const url = "https://api.github.com/user/following/"
     console.log("About to unFollow : ", username)
     // try{
@@ -169,6 +201,19 @@ function unFollowPerson(username){
     //     console.log("didn't find the user : ", e)
     // }
 }
+
+
+//Watchers : my favorite place to 
+//          take important actions from
+//              interaction. (Sep 30, 2026)
+watch(validUsername, (newUsername)=>{
+    // 1="doesFollow()", 2="unFollowPerson()"
+    if (commandNumber.value == 1){
+        checkFollow(newUsername)
+    } else if (commandNumber.value == 2){
+        unFollowPerson()
+    }
+})
 </script>
 
 <style>
