@@ -70,7 +70,7 @@
                 :type="showToken ? 'text' : 'password'"
                 v-model="userToken"
                 placeholder="••••••••••••••••••••••"
-                class="w-full bg-transparent border border-[#2a2a2a] rounded-lg px-4 py-3 text-[#5dd8be] text-sm placeholder-[#5dd8be]/60 tracking-widest outline-none focus:border-[#5dd8be]/50 transition-colors pr-12"
+                class="w-full bg-transparent border border-[#2a2a2a] rounded-lg px-4 py-3 text-[#5dd8be] text-sm placeholder-[#3a3a3a]/60 tracking-widest outline-none focus:border-[#5dd8be]/50 transition-colors pr-12"
               />
               <!-- Toggle button (mobile) -->
               <button
@@ -188,7 +188,9 @@
               <div class="flex-1 min-w-0">
                 <template v-if="user.username">
                   <p class="text-white font-bold text-sm tracking-wide truncate">{{ user.username }}</p>
-                  <p class="text-[#4a7a72] text-xs tracking-wide">unfollowed you</p>
+                  <p class="text-[#4a7a72] text-xs tracking-wide">
+                  you follow
+                </p>
                 </template>
                 <template v-else>
                   <div class="h-3 bg-[#2a2a2a] rounded w-28 mb-1.5 animate-pulse"></div>
