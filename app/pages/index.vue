@@ -148,7 +148,8 @@
         </div>
 
         <!-- UNFOLLOWERS CARD -->
-        <div class="bg-[#111111] rounded-2xl p-6 flex-[1.6] flex flex-col gap-4 min-h-[400px]">
+        <div 
+          class="bg-[#111111] rounded-2xl p-6 flex-[1.6] flex flex-col gap-4 min-h-[400px] max-h-[75vh]">
           <!-- Card header -->
           <div class="flex items-center justify-between">
             <span class="text-[#5dd8be] font-bold text-base tracking-wide">unfollowers</span>
