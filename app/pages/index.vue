@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col bg-[#5dd8be] font-mono">
-    <!-- I hereby, admit on my honor that i was helped by AI (Claude sonnet 4.6) on refactoring the UI . the original UI can be found in backup/index.vue. October 1, 2026 -->
+    <!-- I hereby, admit on my honor that i was assisted by AI (Claude sonnet 4.6) on refactoring/improving the UI . the original UI can be found in backup/index.vue. October 1, 2026 -->
 
     <!-- ═══════════════════ NAVBAR ═══════════════════ -->
     <nav class="bg-[#0d0d0d] px-6 py-4 flex items-center justify-between">
