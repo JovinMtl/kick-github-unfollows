@@ -189,7 +189,8 @@
                 <template v-if="user.username">
                   <p class="text-white font-bold text-sm tracking-wide truncate">{{ user.username }}</p>
                   <p class="text-[#4a7a72] text-xs tracking-wide">
-                  you follow
+                    <span v-if="user.followStatus === false">unfollowed you</span>
+                    <span v-else>follows you</span>
                 </p>
                 </template>
                 <template v-else>
@@ -202,7 +203,7 @@
               <button
                 v-if="user.followStatus === false"
                 @click="checkUsernameValid(user.username, 2)"
-                class="flex-shrink-0 border border-[#2a2a2a] text-[#8a8a8a] hover:border-[#5dd8be] hover:text-[#5dd8be] text-xs px-3 py-1.5 rounded tracking-wide transition-colors"
+                class="flex-shrink-0 border border-[#2a2a2a] text-[#8a8a8a] text-[#ef4444] hover:border-[#5dd8be] hover:text-[#5dd8be] text-xs px-3 py-1.5 rounded tracking-wide transition-colors"
               >
                 remove
               </button>
