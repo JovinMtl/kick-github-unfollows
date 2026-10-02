@@ -223,6 +223,13 @@
             <button class="text-[#5dd8be] text-xs font-bold tracking-wide hover:underline">retry</button>
           </div>
         </div>
+        <!-- mindstar0209 -->
+        <!-- <div>
+          <p> Want to check if follows: 
+              <button style="color:red; background-color: blue;" @click="doesFollowTMP('mustafacagri')">check</button>
+          </p>
+          <p> Response : {{ userUnfollowed }}</p>
+        </div> -->
 
       </div><!-- end cards -->
     </main>
@@ -240,8 +247,9 @@
 </template>
 
 <script setup lang="ts">
-import {  ref, toValue, watch } from 'vue'
+import { reactive,  ref, toValue, watch } from 'vue'
 import type { Ref } from 'vue'
+import type { userToUnfollow } from '../types'
 
 // States
 const pageNumber:Ref<number> = ref(1)
@@ -259,6 +267,7 @@ const validUsername:Ref<string> = ref('')
 const commandNumber:Ref<number> = ref(0)
 
 const unFollowers = ref([])
+const userUnfollowed = ref<userToUnfollow>()
 
 
 // Functions
@@ -327,24 +336,11 @@ async function doesFollow(user){
         data.value = await response.json();
         if(response.ok){
             console.log(user?.username,"the Status is okay: ", response)
-          if((response.status == 204)){
-            console.log(user?.username, " it's OKAY, doesFollow. ")
-          }
         } else {
             // console.log(user?.username,"The response is not Okay: ", response))
             badPeople.value += 1
             builUnFollows(user?.username, false)
         }
-        // if((response.status == 204)){
-        //     console.log(user?.username, " it's OKAY. ")
-        //     unFollows.value.push(username)
-        //     // builUnFollows(user?.username)
-            
-        // } else if((response.status == 404)){
-        //     console.log(user?.username, " Does not follow me ")
-        // } else {
-        //     console.log(user?.username, " don't know if follows")
-        // }
     } catch(e){
         // console.log("didn't find the user : ", e)
     }
@@ -387,27 +383,31 @@ async function checkUsernameValid(username:string, command:number=0){
         // notify that caracters must be above 2.
     }   
 }
-async function unFollowPerson(username){
+
+async function unFollowPerson(username:string){
+    let actualResponse = {'username':username, status: 0}
     const url = "https://api.github.com/user/following/"
     console.log("About to unFollow : ", username)
-    // try{
-    //     const response = await fetch(`${url}${username}`, {
-    //         method: "DELETE",
-    //         headers: {
-    //             "Content-type": "application/json",
-    //             Authorization: "Bearer " + userToken.value,
-    //         }
-    //     });
-    //     data.value = await response.json();
-    //     if(response.ok){
-    //         console.log(username,"the Status is okay: ", response)
-    //     } else {
-    //         console.log(username,"The response is not Okay: ", response)
-    //         // builUnFollows(username, false)
-    //     }
-    // } catch(e){
-    //     console.log("didn't find the user : ", e)
-    // }
+    try{
+        const response = await fetch(`${url}${username}`, {
+            method: "DELETE",
+            headers: {
+                "Content-type": "application/json",
+                Authorization: "Bearer " + userToken.value,
+            }
+        });
+        let userUnfollowedPromise = response.status
+        userUnfollowed.value = {username:username, status: userUnfollowedPromise}
+        data.value = await response.json();
+        if(response.ok){
+            console.log(username,"the Status is okay: ", response)
+        } else {
+            console.log(username,"The response is not Okay: ", response)
+            // builUnFollows(username, false)
+        }
+    } catch(e){
+        console.log("didn't unfollow the user : ", username, )
+    }
 }
 function unFollowPersonAll(){
   unFollowers.value.forEach((unFollower)=>{
@@ -441,6 +441,42 @@ watch(usernames, (newValue)=>{
   unFollowers.value = usernames?.value?.filter(user=>user?.followStatus == false)
   // console.log("unFollowers : " + unFollowers.value + " from " + newValue)
 })
+watch(userUnfollowed, (newValue:userToUnfollow)=>{
+  if(newValue.status == 204){
+    console.log("unfollowed " + newValue.username )
+    removeUnfollower(newValue)
+  } else if(newValue.status == 404){
+    console.log("failed to unfollow " + newValue.username)
+  }
+})
+
+
+
+// TMP functions
+
+function removeUnfollower(user:userToUnfollow){
+  unFollowers.value = unFollowers.value.filter((unFollower)=>unFollower.username != user.username)
+}
+async function doesFollowTMP(username:string){
+    // const oneTimeResponse = ref(true)
+        data.value = []
+        const url = "https://api.github.com/user/following/"
+        console.log("Running for : ", username)
+    try{
+        const response = await fetch(`${url}${username}`, {
+            method: "GET",
+            headers: {
+                "Content-type": "application/json",
+                Authorization: "Bearer " + userToken.value,
+            }
+        });
+        let userUnfollowedPromise = response.status
+        userUnfollowed.value = {username:username, status: userUnfollowedPromise}
+        data.value = await response.json();
+    } catch(e){
+        // console.log("didn't find the user : ", e)
+    }
+}
 </script>
 
 <style scoped>
