@@ -155,9 +155,9 @@
           <!-- Card header -->
           <div class="flex items-center justify-between">
             <span class="text-[#5dd8be] font-bold text-base tracking-wide">unfollowers</span>
-            <span
+            <span 
               class="bg-[#5dd8be] text-[#0d0d0d] text-xs font-black px-3 py-1 rounded">
-              {{ unFollowers.value.length }}
+              {{ badPeople }}
             </span>
           </div>
 
@@ -223,18 +223,11 @@
             <button class="text-[#5dd8be] text-xs font-bold tracking-wide hover:underline">retry</button>
           </div>
         </div>
-        <!-- mindstar0209 -->
-        <!-- <div>
-          <p> Want to check if follows: 
-              <button style="color:red; background-color: blue;" @click="doesFollowTMP('mustafacagri')">check</button>
-          </p>
-          <p> Response : {{ userUnfollowed }}</p>
-        </div> -->
 
-      </div><!-- end cards -->
+      </div>
     </main>
 
-    <!-- ═══════════════════ FOOTER ═══════════════════ -->
+    
     <footer class="bg-[#e8f5f1] px-6 py-5 md:px-12">
       <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
         <span class="text-[#4a7a72] text-xs tracking-wide">2026</span>
@@ -249,7 +242,7 @@
 <script setup lang="ts">
 import { reactive,  ref, toValue, watch } from 'vue'
 import type { Ref } from 'vue'
-import type { userToUnfollow } from '../types'
+import type { userToUnfollow, usernamesType } from '../types'
 
 // States
 const pageNumber:Ref<number> = ref(1)
@@ -258,21 +251,20 @@ const userName:Ref<string> = ref('')
 const showToken:Ref<boolean> = ref(false)
 
 const data = ref([])
-const usernames = ref ([])
-const unFollows = ref<string[]>([])
+const usernames = ref<usernamesType[]>([])
 const badPeople:Ref<number>  = ref(0)
 const endLoading:Ref<number>  = ref(0)
 
 const validUsername:Ref<string> = ref('')
 const commandNumber:Ref<number> = ref(0)
 
-const unFollowers = ref([])
+const unFollowers = ref<usernamesType[]>([])
 const userUnfollowed = ref<userToUnfollow>()
 
 
 // Functions
 async function getFollowings(pNumber:number){
-    badPeople.value = 0
+    // badPeople.value = 0
     if(endLoading.value == 2){
         usernames.value = [];
         pageNumber.value = 1
@@ -299,9 +291,6 @@ async function getFollowings(pNumber:number){
                 console.log("Out of reach");
                 endLoading.value = 2
             }
-            
-            // getFollowers()
-            // console.log("and our user")
         } else{
             // data.value = ["THe response is not OK", ]
                 }
@@ -320,13 +309,13 @@ function builUnFollows (username:string, promisedValue){
     // })
 }
 
-async function doesFollow(user){
+async function doesFollow(username:string){
     // const oneTimeResponse = ref(true)
         data.value = []
         const url = "https://api.github.com/users/"
-        console.log("Running for : ", user?.username)
+        console.log("Running for : ", username)
     try{
-        const response = await fetch(`${url}${user?.username}/following/${userName.value}`, {
+        const response = await fetch(`${url}${username}/following/${userName.value}`, {
             method: "GET",
             headers: {
                 "Content-type": "application/json",
@@ -335,22 +324,20 @@ async function doesFollow(user){
         });
         data.value = await response.json();
         if(response.ok){
-            console.log(user?.username,"the Status is okay: ", response)
+            console.log(username,"the Status is okay: ", response)
         } else {
             // console.log(user?.username,"The response is not Okay: ", response))
-            badPeople.value += 1
-            builUnFollows(user?.username, false)
+            // badPeople.value += 1
+            builUnFollows(username, false)
         }
     } catch(e){
         // console.log("didn't find the user : ", e)
     }
 }
 function checkFollow(){
-    let counter = 0
-    badPeople.value = 0
-    // console.log("based on : ", usernames?.value)
+    // badPeople.value = 0
     usernames?.value?.forEach(user => {
-        doesFollow(user)
+        doesFollow(user.username)
     });
 }
 async function checkUsernameValid(username:string, command:number=0){
@@ -415,6 +402,9 @@ function unFollowPersonAll(){
     unFollowPerson(unFollower.username)
   })
 }
+function removeUnfollower(user:userToUnfollow){
+  unFollowers.value = unFollowers.value.filter((unFollower)=>unFollower.username != user.username)
+}
 
 
 //Watchers : my favorite place to 
@@ -423,7 +413,7 @@ function unFollowPersonAll(){
 watch(validUsername, (newUsername)=>{
     // 1="doesFollow()", 2="unFollowPerson()"
     if (commandNumber.value == 1){
-        checkFollow(toValue(validUsername))
+        checkFollow()
         // unFollowPerson()
     } else if (commandNumber.value == 2){
         unFollowPerson(toValue(validUsername))
@@ -439,6 +429,7 @@ watch(endLoading, (newValue)=>{
 })
 watch(usernames, (newValue)=>{
   unFollowers.value = usernames?.value?.filter(user=>user?.followStatus == false)
+  badPeople.value = unFollowers?.value?.length
   // console.log("unFollowers : " + unFollowers.value + " from " + newValue)
 })
 watch(userUnfollowed, (newValue:userToUnfollow)=>{
@@ -452,31 +443,6 @@ watch(userUnfollowed, (newValue:userToUnfollow)=>{
 
 
 
-// TMP functions
-
-function removeUnfollower(user:userToUnfollow){
-  unFollowers.value = unFollowers.value.filter((unFollower)=>unFollower.username != user.username)
-}
-async function doesFollowTMP(username:string){
-    // const oneTimeResponse = ref(true)
-        data.value = []
-        const url = "https://api.github.com/user/following/"
-        console.log("Running for : ", username)
-    try{
-        const response = await fetch(`${url}${username}`, {
-            method: "GET",
-            headers: {
-                "Content-type": "application/json",
-                Authorization: "Bearer " + userToken.value,
-            }
-        });
-        let userUnfollowedPromise = response.status
-        userUnfollowed.value = {username:username, status: userUnfollowedPromise}
-        data.value = await response.json();
-    } catch(e){
-        // console.log("didn't find the user : ", e)
-    }
-}
 </script>
 
 <style scoped>
