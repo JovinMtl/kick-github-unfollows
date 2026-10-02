@@ -155,9 +155,9 @@
           <!-- Card header -->
           <div class="flex items-center justify-between">
             <span class="text-[#5dd8be] font-bold text-base tracking-wide">unfollowers</span>
-            <span v-if="badPeople > 0"
+            <span
               class="bg-[#5dd8be] text-[#0d0d0d] text-xs font-black px-3 py-1 rounded">
-              {{ badPeople }}
+              {{ unFollowers.value.length }}
             </span>
           </div>
 
