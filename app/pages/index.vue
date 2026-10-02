@@ -123,6 +123,7 @@
 
           <!-- Unfollow all button -->
           <button
+            v-if="endLoading == 2"
             id="unfollow-all-btn"
             @click="checkUsernameValid(userName, 1)"
             class="w-full bg-transparent border border-[#5dd8be] hover:bg-[#5dd8be]/10 text-[#5dd8be] font-bold text-sm tracking-widest py-4 rounded-xl transition-colors flex items-center justify-center gap-2"
@@ -141,7 +142,7 @@
             <span class="text-[#5a8a80] text-xs tracking-wide">
               <template v-if="endLoading === 1">scanning... {{ usernames?.length }} found</template>
               <template v-else-if="endLoading === 2">
-                {{ usernames?.length }} unfollowers found &mdash; done
+                {{ usernames?.length }} followings found &mdash; done
               </template>
             </span>
           </div>
@@ -149,7 +150,7 @@
 
         <!-- UNFOLLOWERS CARD -->
         <div 
-          class="bg-[#111111] rounded-2xl p-6 flex-[1.6] flex flex-col gap-4 min-h-[400px] max-h-[75vh] overflow-auto jove">
+          class="bg-[#111111] rounded-2xl p-6 flex-[1.6] flex flex-col gap-4 min-h-[360px] max-h-[75vh] overflow-auto jove">
           <!-- Card header -->
           <div class="flex items-center justify-between">
             <span class="text-[#5dd8be] font-bold text-base tracking-wide">unfollowers</span>
@@ -297,12 +298,16 @@ async function getFollowings(pNumber:number){
 }
 function buildUsername (array){
     // const array1 = [1,2,3,5]
-    const result = array.map(val=>({username:val.login, followStatus: true, avatar_url:val.avatar_url}))
+    const result = array.map(val=>({username:val.login, followStatus: true, avatar_url:val.avatar_url, checked:false}))
     usernames.value = usernames.value.concat(result)
 }
 function builUnFollows (username:string, promisedValue){
     const updatedUsername = usernames.value.map(user=>user.username == username ? {...user, followStatus:promisedValue} : user)
     usernames.value = updatedUsername
+    // usernames.value.forEach((user)=>{
+    //   user.checked = true
+    //   if(user.)
+    // })
 }
 
 async function doesFollow(user){
