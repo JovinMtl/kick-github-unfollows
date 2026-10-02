@@ -165,14 +165,14 @@
           <div class="flex flex-col gap-3 flex-1 overflow-y-auto">
             <template v-if="usernames?.length === 0 && endLoading === 0">
               <div class="flex-1 flex items-center justify-center">
-                <p class="text-[#2a2a2a] text-xs tracking-wide">no data yet — run a search</p>
+                <p class="text-[#2a2a2a] text-xs tracking-wide">no data yet — please run a search.</p>
               </div>
             </template>
 
             <div
               v-for="(user, index) in unFollowers"
               :key="user.username"
-              class="flex items-center gap-3"
+              class="flex items-center gap-3 mr-[4px]"
             >
               <!-- Avatar -->
               <NuxtImg
@@ -280,11 +280,11 @@ async function getFollowings(pNumber:number){
         });
         data.value = await response.json();
         if((response.ok)){
-            console.log("The reponse we get is : ", response)
+            // console.log("The reponse we get is : ", response)
             buildUsername(data.value)
             if(data.value.length >= 1){
                 pageNumber.value += 1
-                console.log("Gotten.")
+                // console.log("Gotten.")
                 getFollowings(pageNumber.value)
             } else{
                 console.log("Out of reach");
@@ -327,9 +327,11 @@ async function doesFollow(user){
         data.value = await response.json();
         if(response.ok){
             console.log(user?.username,"the Status is okay: ", response)
+          if((response.status == 204)){
+            console.log(user?.username, " it's OKAY, doesFollow. ")
+          }
         } else {
-            console.log(user?.username,"The response is not Okay: ", response)
-            // unFollows.value.push(user?.username)
+            // console.log(user?.username,"The response is not Okay: ", response))
             badPeople.value += 1
             builUnFollows(user?.username, false)
         }
@@ -344,13 +346,13 @@ async function doesFollow(user){
         //     console.log(user?.username, " don't know if follows")
         // }
     } catch(e){
-        console.log("didn't find the user : ", e)
+        // console.log("didn't find the user : ", e)
     }
 }
 function checkFollow(){
     let counter = 0
     badPeople.value = 0
-    console.log("based on : ", usernames?.value)
+    // console.log("based on : ", usernames?.value)
     usernames?.value?.forEach(user => {
         doesFollow(user)
     });
@@ -437,7 +439,7 @@ watch(endLoading, (newValue)=>{
 })
 watch(usernames, (newValue)=>{
   unFollowers.value = usernames?.value?.filter(user=>user?.followStatus == false)
-  console.log("unFollowers : " + unFollowers.value + " from " + newValue)
+  // console.log("unFollowers : " + unFollowers.value + " from " + newValue)
 })
 </script>
 
