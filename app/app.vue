@@ -7,3 +7,9 @@
     <nuxtPage/>
   </div>
 </template>
+
+<style>
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+</style>

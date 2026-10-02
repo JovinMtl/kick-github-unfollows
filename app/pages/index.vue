@@ -149,7 +149,7 @@
 
         <!-- UNFOLLOWERS CARD -->
         <div 
-          class="bg-[#111111] rounded-2xl p-6 flex-[1.6] flex flex-col gap-4 min-h-[400px] max-h-[75vh]">
+          class="bg-[#111111] rounded-2xl p-6 flex-[1.6] flex flex-col gap-4 min-h-[400px] max-h-[75vh] overflow-auto jove">
           <!-- Card header -->
           <div class="flex items-center justify-between">
             <span class="text-[#5dd8be] font-bold text-base tracking-wide">unfollowers</span>
@@ -421,3 +421,25 @@ watch(validUsername, (newUsername)=>{
     }
 })
 </script>
+
+<style scoped>
+  ::-webkit-scrollbar-thumb {
+    background-color: black;
+    background-color: #5dd8be;
+    border-radius: 15px;
+    color : #5dd8be;
+  }
+ ::-webkit-scrollbar:horizontal{
+    width: 2px;
+  }
+ ::-webkit-scrollbar {
+    width: 4px;
+    width: 8px;   
+    /*height: 3px;*/
+    color: green;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    background-color: transparent;
+  }
+</style>
