@@ -256,6 +256,8 @@ const endLoading:Ref<number>  = ref(0)
 const validUsername:Ref<string> = ref('')
 const commandNumber:Ref<number> = ref(0)
 
+const unFollowers = ref([])
+
 
 // Functions
 async function getFollowings(pNumber:number){
@@ -266,7 +268,8 @@ async function getFollowings(pNumber:number){
     }
     endLoading.value = 1;
         const url = "https://api.github.com/user/following?page="
-        const response = await fetch(`${url}${pNumber}`, {
+        const perPage = '&per_page=100'
+        const response = await fetch(`${url}${pNumber}${perPage}`, {
             method: "GET",
             headers: {
                 "Content-type": "application/json",
@@ -298,15 +301,6 @@ function buildUsername (array){
     usernames.value = usernames.value.concat(result)
 }
 function builUnFollows (username:string, promisedValue){
-    // const array1 = [1,2,3,5]
-    // unFollows.value.push(username)
-
-    // usernames.value.forEach((user)=>{
-    //     if((user.username) == username){
-    //         console.log("Found :", username)
-    //         user.
-    //     }
-    // })
     const updatedUsername = usernames.value.map(user=>user.username == username ? {...user, followStatus:promisedValue} : user)
     usernames.value = updatedUsername
 }
@@ -439,7 +433,6 @@ watch(validUsername, (newUsername)=>{
     color: green;
   }
   ::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
     background-color: transparent;
   }
 </style>
