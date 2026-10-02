@@ -168,7 +168,7 @@
             </template>
 
             <div
-              v-for="(user, index) in usernames"
+              v-for="(user, index) in unFollowers"
               :key="user.username"
               class="flex items-center gap-3"
             >
@@ -410,9 +410,20 @@ watch(validUsername, (newUsername)=>{
     // 1="doesFollow()", 2="unFollowPerson()"
     if (commandNumber.value == 1){
         checkFollow(newUsername)
+        // unFollowPerson()
     } else if (commandNumber.value == 2){
         unFollowPerson()
     }
+})
+watch(endLoading, (newValue)=>{
+  if(newValue == 2){
+    // Run Check of follow-back function.
+    checkFollow()
+  }
+})
+watch(usernames, (newValue)=>{
+  unFollowers.value = usernames?.value?.filter(user=>user?.followStatus == false)
+  console.log("unFollowers : " + unFollowers.value + " from " + newValue)
 })
 </script>
 
