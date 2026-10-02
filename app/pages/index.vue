@@ -61,9 +61,21 @@
             </span>
           </div>
 
+          <!-- GitHub Username field -->
+          <div class="flex flex-col gap-2">
+            <label class="text-[#5a8a80] text-xs tracking-wide">Username</label>
+            <input
+              id="github-username-input"
+              type="text"
+              v-model="userName"
+              placeholder="Your GitHub username"
+              class="w-full bg-transparent border border-[#2a2a2a] rounded-lg px-4 py-3 text-[#5dd8be] text-sm placeholder-[#3a3a3a] outline-none focus:border-[#5dd8be]/50 transition-colors"
+            />
+          </div>
+
           <!-- GitHub Token field -->
           <div class="flex flex-col gap-2">
-            <label class="text-[#5a8a80] text-xs tracking-wide">github token</label>
+            <label class="text-[#5a8a80] text-xs tracking-wide">Token</label>
             <div class="relative">
               <input
                 id="github-token-input"
@@ -93,20 +105,9 @@
               <svg class="w-3.5 h-3.5 text-[#4a7a72]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
               </svg>
-              <span class="text-[#4a7a72] text-[11px] tracking-wide">token is never stored or exposed</span>
+              <span class="text-[#4a7a72] text-[11px] tracking-wide">Your token is never  exposed</span>
+              <!-- <span class="text-[#4a7a72] text-[11px] tracking-wide">token is never stored or exposed</span> -->
             </div>
-          </div>
-
-          <!-- GitHub Username field -->
-          <div class="flex flex-col gap-2">
-            <label class="text-[#5a8a80] text-xs tracking-wide">github username</label>
-            <input
-              id="github-username-input"
-              type="text"
-              v-model="userName"
-              placeholder="your-username"
-              class="w-full bg-transparent border border-[#2a2a2a] rounded-lg px-4 py-3 text-[#5dd8be] text-sm placeholder-[#3a3a3a] outline-none focus:border-[#5dd8be]/50 transition-colors"
-            />
           </div>
 
           <!-- Find unfollowers button -->
@@ -125,7 +126,7 @@
           <button
             v-if="endLoading == 2"
             id="unfollow-all-btn"
-            @click="checkUsernameValid(userName, 1)"
+            @click="checkUsernameValid(userName, 3)"
             class="w-full bg-transparent border border-[#5dd8be] hover:bg-[#5dd8be]/10 text-[#5dd8be] font-bold text-sm tracking-widest py-4 rounded-xl transition-colors flex items-center justify-center gap-2"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -150,7 +151,7 @@
 
         <!-- UNFOLLOWERS CARD -->
         <div 
-          class="bg-[#111111] rounded-2xl p-6 flex-[1.6] flex flex-col gap-4 min-h-[360px] max-h-[75vh] overflow-auto jove">
+          class="bg-[#111111] rounded-2xl p-6 flex-[1.6] flex flex-col gap-4 min-h-[360px] max-h-[75vh] overflow-auto">
           <!-- Card header -->
           <div class="flex items-center justify-between">
             <span class="text-[#5dd8be] font-bold text-base tracking-wide">unfollowers</span>
@@ -406,6 +407,12 @@ async function unFollowPerson(username){
     //     console.log("didn't find the user : ", e)
     // }
 }
+function unFollowPersonAll(){
+  unFollowers.value.forEach((unFollower)=>{
+    // unfollow each person containing in unFollowers list.
+    unFollowPerson(unFollower.username)
+  })
+}
 
 
 //Watchers : my favorite place to 
@@ -414,10 +421,12 @@ async function unFollowPerson(username){
 watch(validUsername, (newUsername)=>{
     // 1="doesFollow()", 2="unFollowPerson()"
     if (commandNumber.value == 1){
-        checkFollow(newUsername)
+        checkFollow(toValue(validUsername))
         // unFollowPerson()
     } else if (commandNumber.value == 2){
-        unFollowPerson()
+        unFollowPerson(toValue(validUsername))
+    } else if (commandNumber.value == 3){
+        unFollowPersonAll()
     }
 })
 watch(endLoading, (newValue)=>{
@@ -444,7 +453,7 @@ watch(usernames, (newValue)=>{
   }
  ::-webkit-scrollbar {
     width: 4px;
-    width: 8px;   
+    /*width: 8px;   */
     /*height: 3px;*/
     color: green;
   }
