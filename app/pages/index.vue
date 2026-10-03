@@ -8,7 +8,7 @@
       <div class="flex items-center gap-3">
         <!-- Terminal icon (mobile only) -->
         <div class="md:hidden w-9 h-9 border border-[#5dd8be] rounded flex items-center justify-center">
-          <span class="text-[#5dd8be] text-xs font-bold">&gt;_</span>
+          <span class="text-[#5dd8be] text-xs font-bold" style="font-size: 1.5rem;">K</span>
         </div>
         <span class="text-[#5dd8be] font-bold text-sm tracking-tight">kick-github-unfollows</span>
       </div>
