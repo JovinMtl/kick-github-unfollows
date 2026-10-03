@@ -1,10 +1,5 @@
 <template>
-	<div style="position: relative;display: inline-flex
-;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    flex-direction: column;
-    justify-content: space-between;transform: translateY(-4px);">
+	<div class="main-container">
 	    <div class="container-processing">
 	        <div class="line line1"></div>
 	        <div class="line line2"></div>
@@ -24,6 +19,13 @@
             width: 100vw;
             height: 100vh;
         }
+        .main-container{
+            position: relative;display: inline-flex;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            flex-direction: column;
+            justify-content: space-between;transform: translateY(-4px);
+        }
         .container-processing{
             position: absolute;
             height: 30px;
@@ -38,10 +40,8 @@
         }
         .line1{
             position: relative;
-            background-color: red;
-
-        background-color: rgb(74, 229, 240);
-            top : 50%;
+            background-color: rgb(74, 229, 240);
+            top : 50%;c="">
             left : 20%;
             transform: translate(-50%, -50%);
             border-radius: 10px;
@@ -57,7 +57,7 @@
         }
         .line2{
             position: absolute;
-            background-color: rgb(0, 132, 255);
+            background-color: rgb(136, 255, 0);
             left : 35%;
             top : 50%;
             transform: translate(-50%, -50%);
@@ -96,7 +96,7 @@
         }
         .line5{
             position: absolute;
-            background-color: rgb(8, 165, 139);
+            background-color: rgb(77, 132, 233);
             left : 80%;
             top : 50%;
             transform: translate(-50%, -50%);
