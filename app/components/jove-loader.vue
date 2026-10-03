@@ -24,7 +24,8 @@
             align-items: flex-start;
             flex-wrap: wrap;
             flex-direction: column;
-            justify-content: space-between;transform: translateY(-4px);
+            justify-content: space-between;
+            transform: translateY(-4px);
         }
         .container-processing{
             position: absolute;
@@ -41,7 +42,7 @@
         .line1{
             position: relative;
             background-color: rgb(74, 229, 240);
-            top : 50%;c="">
+            top : 50%;
             left : 20%;
             transform: translate(-50%, -50%);
             border-radius: 10px;
