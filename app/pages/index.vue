@@ -244,7 +244,7 @@
 import { reactive,  ref, toValue, watch } from 'vue'
 import type { Ref } from 'vue'
 import type { userToUnfollow, usernamesType } from '../types';
-import joveLoader from '../components/jove-loader.vue'
+import joveLoader from '../components/jove-loader-aqua.vue'
 
 // States
 const pageNumber:Ref<number> = ref(1)
