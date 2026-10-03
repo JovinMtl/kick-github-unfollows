@@ -154,7 +154,7 @@
           class="bg-[#111111] rounded-2xl p-6 flex-[1.6] flex flex-col gap-4 min-h-[360px] max-h-[75vh] overflow-auto">
           <!-- Card header -->
           <div class="flex items-center justify-between">
-            <span class="text-[#5dd8be] font-bold text-base tracking-wide">unfollowers&nbsp;&nbsp;<joveLoader /></span>
+            <span class="text-[#5dd8be] font-bold text-base tracking-wide">unfollowers&nbsp;&nbsp;<joveLoader v-if="endLoading == 1"/></span>
             
             <span 
               class="bg-[#5dd8be] text-[#0d0d0d] text-xs font-black px-3 py-1 rounded">
