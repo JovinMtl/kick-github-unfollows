@@ -166,7 +166,7 @@
           <div class="flex flex-col gap-3 flex-1 overflow-y-auto">
             <template v-if="usernames?.length === 0 && endLoading === 0">
               <div class="flex-1 flex items-center justify-center">
-                <p class="text-[#5dd8be] text-xs tracking-wide">no data yet — please run a search.</p>
+                <p class="text-[#3a3a3a] text-xs tracking-wide">no data yet — please run a search.</p>
               </div>
             </template>
             <template v-else-if="badPeople === 0 && endLoading === 2">
