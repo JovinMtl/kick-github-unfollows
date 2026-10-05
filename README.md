@@ -1,3 +1,13 @@
+#Why this project ?
+
+As a GitHub user, you may find easy following back the person who followed first. This is one of the path of increasing one's followers which is great to boast audience. In my case, I have found there are unserious people who make pleasure by unfollowing you after a given period of time and makes it difficult to notice in case you have hundreds.
+
+
+
+
+
+
+
 # Nuxt Minimal Starter
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
