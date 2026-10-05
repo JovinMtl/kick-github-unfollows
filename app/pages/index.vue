@@ -232,16 +232,7 @@
 
       </div>
     </main>
-
-    
-    <footer class="bg-[#e8f5f1] px-6 py-5 md:px-12">
-      <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
-        <span class="text-[#4a7a72] text-xs tracking-wide">2026</span>
-        <span class="text-[#4a7a72] text-xs tracking-wide">Thierry Nsanzumukiza</span>
-        <span class="text-[#4a7a72] text-xs tracking-wide">copyright &mdash; reserved.</span>
-      </div>
-    </footer>
-
+    <foo-ter></foo-ter>
   </div>
 </template>
 
@@ -250,6 +241,7 @@ import { reactive,  ref, toValue, watch } from 'vue'
 import type { Ref } from 'vue'
 import type { userToUnfollow, usernamesType } from '../types';
 import joveLoader from '../components/jove-loader-aqua.vue'
+import fooTer from '../components/foo-ter.vue';
 
 // States
 const pageNumber:Ref<number> = ref(1)
