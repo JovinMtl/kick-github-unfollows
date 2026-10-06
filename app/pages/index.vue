@@ -1,43 +1,8 @@
 <template>
   <div class="min-h-screen flex flex-col bg-[#5dd8be] font-mono">
     <!-- I hereby, admit on my honor that i was assisted by AI (Claude sonnet 4.6) on refactoring/improving the UI . the original UI can be found in backup/index.vue. October 1, 2026 -->
+    <head-er></head-er>
 
-    <!-- ═══════════════════ NAVBAR ═══════════════════ -->
-    <nav class="bg-[#0d0d0d] px-6 py-4 flex items-center justify-between">
-      <!-- Logo -->
-      <div class="flex items-center gap-3">
-        <!-- Terminal icon (mobile only) -->
-        <div class="md:hidden w-9 h-9 border border-[#5dd8be] rounded flex items-center justify-center">
-          <span class="text-[#5dd8be] text-xs font-bold" style="font-size: 1.5rem;">K</span>
-        </div>
-        <span class="text-[#5dd8be] font-bold text-sm tracking-tight">kick-github-unfollows</span>
-      </div>
-
-      <!-- Desktop nav links -->
-      <div class="hidden md:flex items-center gap-8">
-        <a href="#" class="text-[#5dd8be] font-bold text-sm tracking-wide">dashboard</a>
-        <a href="#" class="text-[#4a7a72] text-sm tracking-wide hover:text-[#5dd8be] transition-colors">history</a>
-        <a href="#" class="text-[#4a7a72] text-sm tracking-wide hover:text-[#5dd8be] transition-colors">settings</a>
-        <a href="#" class="text-[#4a7a72] text-sm tracking-wide hover:text-[#5dd8be] transition-colors">about</a>
-      </div>
-
-      <!-- Mobile hamburger -->
-      <button class="md:hidden w-9 h-9 border border-[#5dd8be] rounded flex flex-col items-center justify-center gap-1.5">
-        <span class="block w-4 h-px bg-[#5dd8be]"></span>
-        <span class="block w-4 h-px bg-[#5dd8be]"></span>
-        <span class="block w-4 h-px bg-[#5dd8be]"></span>
-      </button>
-    </nav>
-
-    <!-- Mobile tab bar -->
-    <div class="md:hidden bg-[#1a1a1a] flex items-center border-b border-[#2a2a2a]">
-      <a href="#" class="px-4 py-3 text-[#0d0d0d] bg-[#5dd8be] text-xs font-bold tracking-wide rounded-sm mx-2 my-2">dashboard</a>
-      <a href="#" class="px-4 py-3 text-[#4a7a72] text-xs tracking-wide">history</a>
-      <a href="#" class="px-4 py-3 text-[#4a7a72] text-xs tracking-wide">settings</a>
-      <a href="#" class="px-4 py-3 text-[#4a7a72] text-xs tracking-wide">about</a>
-    </div>
-
-    <!-- ═══════════════════ MAIN CONTENT ═══════════════════ -->
     <main class="flex-1 px-6 py-10 md:px-12 md:py-14 max-w-screen-xl mx-auto w-full">
 
       <!-- Hero heading -->
@@ -54,11 +19,15 @@
         <!-- CONNECT CARD -->
         <div class="bg-[#111111] rounded-2xl p-6 flex-1 flex flex-col gap-5">
           <!-- Card header -->
-          <div class="flex items-center justify-between">
+          <!-- <div class="flex items-center justify-between">
             <span class="text-[#5dd8be] font-bold text-base tracking-wide">connect</span>
             <span class="w-3 h-3 rounded-full"
               :class="endLoading === 2 ? 'bg-[#5dd8be]' : 'bg-[#3a3a3a]'">
             </span>
+          </div> -->
+          <div style="display: flex;justify-content: space-between;">
+            <div class="text-[#5dd8be] font-bold text-base tracking-wide">Credit</div>
+            <div class="text-[#5dd8be] font-bold text-base tracking-wide">Debit</div>
           </div>
 
           <!-- GitHub Username field -->
@@ -232,16 +201,18 @@
 
       </div>
     </main>
-    <foo-ter></foo-ter>
+
+    <foot-er></foot-er>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive,  ref, toValue, watch } from 'vue'
+import { ref, toValue, watch } from 'vue'
 import type { Ref } from 'vue'
 import type { userToUnfollow, usernamesType } from '../types';
-import joveLoader from '../components/jove-loader-aqua.vue'
-import fooTer from '../components/foo-ter.vue';
+import joveLoader from '../components/jove-loader-aqua.vue';
+import headEr from '../components/head-er.vue';
+import footEr from '../components/foot-er.vue';
 
 // States
 const pageNumber:Ref<number> = ref(1)
@@ -263,7 +234,6 @@ const userUnfollowed = ref<userToUnfollow>()
 
 // Functions
 async function getFollowings(pNumber:number){
-    // badPeople.value = 0
     if(endLoading.value == 2){
         usernames.value = [];
         pageNumber.value = 1
@@ -280,36 +250,28 @@ async function getFollowings(pNumber:number){
         });
         data.value = await response.json();
         if((response.ok)){
-            // console.log("The reponse we get is : ", response)
             buildUsername(data.value)
             if(data.value.length >= 1){
                 pageNumber.value += 1
-                // console.log("Gotten.")
                 getFollowings(pageNumber.value)
             } else{
                 console.log("Out of reach");
                 endLoading.value = 2
             }
         } else{
-            // data.value = ["THe response is not OK", ]
                 }
 }
-function buildUsername (array){
+function buildUsername (array:any){
     // const array1 = [1,2,3,5]
     const result = array.map(val=>({username:val.login, followStatus: true, avatar_url:val.avatar_url, checked:false}))
     usernames.value = usernames.value.concat(result)
 }
-function builUnFollows (username:string, promisedValue){
+function builUnFollows (username:string, promisedValue:boolean){
     const updatedUsername = usernames.value.map(user=>user.username == username ? {...user, followStatus:promisedValue} : user)
     usernames.value = updatedUsername
-    // usernames.value.forEach((user)=>{
-    //   user.checked = true
-    //   if(user.)
-    // })
 }
 
 async function doesFollow(username:string){
-    // const oneTimeResponse = ref(true)
         data.value = []
         const url = "https://api.github.com/users/"
         console.log("Running for : ", username)
@@ -413,7 +375,6 @@ watch(validUsername, (newUsername)=>{
     // 1="doesFollow()", 2="unFollowPerson()"
     if (commandNumber.value == 1){
         checkFollow()
-        // unFollowPerson()
     } else if (commandNumber.value == 2){
         unFollowPerson(toValue(validUsername))
     } else if (commandNumber.value == 3){
@@ -439,9 +400,6 @@ watch(userUnfollowed, (newValue:userToUnfollow)=>{
     console.log("failed to unfollow " + newValue.username)
   }
 })
-
-
-
 </script>
 
 <style scoped>
