@@ -26,8 +26,10 @@
             </span>
           </div> -->
           <div style="display: flex;justify-content: space-between;">
-            <div class="text-[#5dd8be] font-bold text-base tracking-wide">Credit</div>
-            <div class="text-[#5dd8be] font-bold text-base tracking-wide">Debit</div>
+            <div class="text-[#5dd8be] font-bold text-base tracking-wide border border-[#2a2a2a] px-3 py-1.5 rounded-md bg-[#2a2a2a]">Option 1</div>
+            <NuxtLink to="/should-follow">
+                <div class="text-[#5dd8be] font-bold text-base tracking-wide border border-[#2a2a2a] px-3 py-1.5 rounded-md">Option 2</div>
+            </NuxtLink>
           </div>
 
           <!-- GitHub Username field -->
