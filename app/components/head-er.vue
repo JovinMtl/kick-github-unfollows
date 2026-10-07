@@ -1,5 +1,5 @@
 <template>
-    <nav class="bg-[#0d0d0d] px-6 py-4 flex items-center justify-between">
+    <nav class="bg-[#0d0d0d] px-6 py-4 flex items-center justify-between" style="position: sticky; top:-1px; z-index: 1;">
       <!-- Logo -->
       <div class="flex items-center gap-3">
         <!-- Terminal icon (mobile only) -->
@@ -18,11 +18,11 @@
       </div>
 
       <!-- Mobile hamburger -->
-      <button class="md:hidden w-9 h-9 border border-[#5dd8be] rounded flex flex-col items-center justify-center gap-1.5">
+      <!-- <button class="md:hidden w-9 h-9 border border-[#5dd8be] rounded flex flex-col items-center justify-center gap-1.5">
         <span class="block w-4 h-px bg-[#5dd8be]"></span>
         <span class="block w-4 h-px bg-[#5dd8be]"></span>
         <span class="block w-4 h-px bg-[#5dd8be]"></span>
-      </button>
+      </button> -->
     </nav>
 
     <!-- Mobile tab bar -->
