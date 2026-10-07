@@ -324,7 +324,7 @@ async function checkUsernameValid(username:string, command:number=0){
                     Authorization: "Bearer " + userToken.value,
                 }
             });
-            data.value = await response.json();
+            // data.value = await response.json();
             if(response.ok){
                 console.log(username,"the username is VALID: ", response)
                 validUsername.value = username
@@ -354,7 +354,7 @@ async function followPerson(username:string){
         });
         let userFollowedPromise = response.status
         userFollowed.value = {username:username, status: userFollowedPromise}
-        data.value = await response.json();
+        // data.value = await response.json();
         if(response.ok){
             console.log(username,"the Status is okay: ", response)
         } else {
