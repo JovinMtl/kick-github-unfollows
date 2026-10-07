@@ -373,6 +373,7 @@ function followPersonAll(){
 }
 function removefollower(user:userTofollow){
   followers.value = followers.value.filter((follower)=>follower.username != user.username)
+  nicePeople.value = followers.value.length
 }
 
 
