@@ -10,7 +10,7 @@
         honor to have you here.
       </h1>
       <p class="text-[#0d0d0d]/70 text-sm md:text-base tracking-wide mb-10">
-        find out who has been playing by following you.
+        find out people who are waiting for you to follow back.
       </p>
 
       <!-- Cards container -->
