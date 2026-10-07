@@ -231,6 +231,7 @@ const commandNumber:Ref<number> = ref(0)
 
 const followers = ref<usernamesType[]>([])
 const userFollowed = ref<userTofollow>()
+const doIfollowCounter:Ref<number> = ref(0)
 
 // Order of execution
 // 1. getFollowers
@@ -273,7 +274,6 @@ function buildListOfWhoIshouldFollowBack (username:string, promisedValue:boolean
     const updatedUsername = usernames.value.map(user=>user.username == username ? {...user, followStatus:promisedValue} : user)
     usernames.value = updatedUsername
 }
-
 async function doIfollow(username:string){
         data.value = []
         const url = "https://api.github.com/user/following/"
@@ -287,12 +287,14 @@ async function doIfollow(username:string){
             }
         });
         // data.value = await response.json();
+        doIfollowCounter.value += 1
         if(response.ok){
             console.log(username,"the Status is okay: ", response)
         } else {
             // console.log(user?.username,"The response is not Okay: ", response))
             // nicePeople.value += 1
             buildListOfWhoIshouldFollowBack(username, false)
+            
         }
     } catch(e){
         // console.log("didn't find the user : ", e)
@@ -302,18 +304,7 @@ function checkWhomIfollow(){
     // nicePeople.value = 0
     let counter = 0
     usernames?.value?.forEach(user => {
-        counter += 1
-        console.log("COUNTER : " + counter)
-        doIfollow(user.username)
-        if (counter <= usernames.value.length){
-          if (loadingState.value != 1){
-            loadingState.value = 1
-            console.warn("SETTING counter to 1")
-          }
-        } else{
-          loadingState.value = 0
-          console.warn("SETTING counter to 1, because COUNTER : " + counter + " and length : " + usernames.value.length)
-        }
+      doIfollow(user.username)
     });
 }
 async function checkUsernameValid(username:string, command:number=0){
@@ -413,6 +404,18 @@ watch(userFollowed, (newValue:userTofollow)=>{
     removefollower(newValue)
   } else if(newValue.status == 404){
     console.log("failed to follow " + newValue.username)
+  }
+})
+watch(doIfollowCounter, (newValue:number)=>{
+  console.log("The counter: " + newValue)
+  if (newValue < usernames.value.length){
+    if (loadingState.value != 1){
+      loadingState.value = 1
+      console.warn("SETTING counter to 1, and counter: " + newValue)
+    }
+  } else if (newValue == usernames.value.length){
+    loadingState.value = 0
+    console.warn("SETTING counter to 0, because COUNTER : " + newValue + " and length : " + usernames.value.length)
   }
 })
 </script>
