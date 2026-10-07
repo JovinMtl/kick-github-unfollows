@@ -114,7 +114,7 @@
             <span class="text-[#5a8a80] text-xs tracking-wide">
               <template v-if="endLoading === 1">scanning... {{ usernames?.length }} found</template>
               <template v-else-if="endLoading === 2">
-                {{ usernames?.length }} followings found &mdash; done
+                {{ usernames?.length }} follower<span v-if="usernames?.length > 1">s</span> found &mdash; done
               </template>
             </span>
           </div>
