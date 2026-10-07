@@ -123,7 +123,7 @@
           class="bg-[#111111] rounded-2xl p-6 flex-[1.6] flex flex-col gap-4 min-h-[360px] max-h-[75vh] overflow-auto">
           <!-- Card header -->
           <div class="flex items-center justify-between">
-            <span class="text-[#5dd8be] font-bold text-base tracking-wide">followers&nbsp;&nbsp;<joveLoader v-if="endLoading == 1"/></span>
+            <span class="text-[#5dd8be] font-bold text-base tracking-wide">followers&nbsp;&nbsp;<joveLoader v-if="endLoading == 1 || loadingState == 1"/> : {{ endLoading }} : {{ loadingState }}</span>
             
             <span 
               class="bg-[#5dd8be] text-[#0d0d0d] text-xs font-black px-3 py-1 rounded">
@@ -224,6 +224,7 @@ const data = ref([])
 const usernames = ref<usernamesType[]>([])
 const nicePeople:Ref<number>  = ref(0)
 const endLoading:Ref<number>  = ref(0)
+const loadingState:Ref<number> = ref(0)
 
 const validUsername:Ref<string> = ref('')
 const commandNumber:Ref<number> = ref(0)
@@ -285,7 +286,7 @@ async function doIfollow(username:string){
                 Authorization: "Bearer " + userToken.value,
             }
         });
-        data.value = await response.json();
+        // data.value = await response.json();
         if(response.ok){
             console.log(username,"the Status is okay: ", response)
         } else {
@@ -299,8 +300,20 @@ async function doIfollow(username:string){
 }
 function checkWhomIfollow(){
     // nicePeople.value = 0
+    let counter = 0
     usernames?.value?.forEach(user => {
+        counter += 1
+        console.log("COUNTER : " + counter)
         doIfollow(user.username)
+        if (counter <= usernames.value.length){
+          if (loadingState.value != 1){
+            loadingState.value = 1
+            console.warn("SETTING counter to 1")
+          }
+        } else{
+          loadingState.value = 0
+          console.warn("SETTING counter to 1, because COUNTER : " + counter + " and length : " + usernames.value.length)
+        }
     });
 }
 async function checkUsernameValid(username:string, command:number=0){
