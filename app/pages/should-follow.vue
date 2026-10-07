@@ -95,7 +95,7 @@
 
           <!-- follow all button -->
           <button
-            v-if="endLoading == 2"
+            v-if="loadingState == 2"
             id="follow-all-btn"
             @click="checkUsernameValid(userName, 3)"
             class="w-full bg-transparent border border-[#5dd8be] hover:bg-[#5dd8be]/10 text-[#5dd8be] font-bold text-sm tracking-widest py-4 rounded-xl transition-colors flex items-center justify-center gap-2"
@@ -417,7 +417,7 @@ watch(doIfollowCounter, (newValue:number)=>{
       console.warn("SETTING counter to 1, and counter: " + newValue)
     }
   } else if (newValue == usernames.value.length){
-    loadingState.value = 0
+    loadingState.value = 2
     console.warn("SETTING counter to 0, because COUNTER : " + newValue + " and length : " + usernames.value.length)
   }
 })
